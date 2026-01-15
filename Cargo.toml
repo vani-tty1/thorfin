@@ -2,3 +2,7 @@
 name = "thorfin"
 version = "0.1.0"
 edition = "2021"
+
+[dependencies]
+gtk4 = "0.10.3"
+libadwaita = { version = "0.8.1", features = ["v1_6"] }
