@@ -1,7 +1,7 @@
 use libadwaita as adw;
 use adw::prelude::*;
 use adw::{HeaderBar, ApplicationWindow, Application};
-use gtk4::{self as gtk};
+use gtk4::{self as gtk, MenuButton, Orientation, gio};
 use gtk::{Box};
 
 pub fn window_init(main: &Application) {
@@ -13,11 +13,24 @@ pub fn window_init(main: &Application) {
     //      ├── 1. head_bar (Added first -> Sits at the Top)
     //      └── 2. main_dis (Added second -> Sits at the Bottom)
     //              └── spinner (Inside main_dis)
-    let content = Box::new(gtk4::Orientation::Vertical, 0);
+    
+    
+    
+    let main_menu = gio::Menu::new();
+    main_menu.append(Some("Preferences"), Some("app.preferences"));
+    main_menu.append(Some("About"), Some("app.about"));
+
+    let menu_btn = MenuButton::builder()
+        .icon_name("open-menu-symbolic") // Standard "Hamburger" icon
+        .menu_model(&main_menu)
+        .build();
+    
+    let content = Box::new(Orientation::Vertical, 0);
     let head_bar = HeaderBar::builder()
         .build();
+    head_bar.pack_end(&menu_btn);
     content.append(&head_bar);
-
+    
     
     let main_dis = Box::builder()
         .valign(gtk4::Align::Center)
@@ -35,8 +48,8 @@ pub fn window_init(main: &Application) {
     let window = ApplicationWindow::builder()
         .application(main)
         .title("Thorfin")
-        .default_width(500)
-        .default_height(300)
+        .default_width(700)
+        .default_height(530)
         .content(&content) 
         .build();
     window.present();
