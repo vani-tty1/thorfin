@@ -20,6 +20,7 @@ pub fn abt_shortc(app: &adw::Application) {
 
 fn show_dialog(parent: Option<&gtk::Window>) {
     let dialog = AboutDialog::builder()
+        .application_icon("org.gnome.Software")
         .application_name("Thorfin")
         .developer_name("Vani1-2")
         .version("0.1.0")

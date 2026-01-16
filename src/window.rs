@@ -2,7 +2,7 @@ use libadwaita as adw;
 use adw::prelude::*;
 use adw::{HeaderBar, ApplicationWindow, Application};
 use gtk4::{self as gtk, MenuButton, Orientation, gio};
-use gtk::{Box};
+use gtk::{Box, Button};
 
 pub fn window_init(main: &Application) {
     //notes to self:
@@ -21,7 +21,7 @@ pub fn window_init(main: &Application) {
     main_menu.append(Some("About"), Some("app.about"));
 
     let menu_btn = MenuButton::builder()
-        .icon_name("open-menu-symbolic") // Standard "Hamburger" icon
+        .icon_name("open-menu-symbolic")
         .menu_model(&main_menu)
         .build();
     
@@ -38,9 +38,16 @@ pub fn window_init(main: &Application) {
         .hexpand(true)
         .vexpand(true)
         .build();
+    let button = Button::builder()
+        .label("CLICK ME")
+        .build();
+    button.connect_clicked(|_|{
+        println!("Lmao GAGO KA");
+    });
     
     let spinner = adw::Spinner::new();
     spinner.set_size_request(128, 128);
+    main_dis.append(&button);
     main_dis.append(&spinner);
     
     content.append(&main_dis);
