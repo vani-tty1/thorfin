@@ -2,7 +2,9 @@ use libadwaita as adw;
 use adw::prelude::*;
 use adw::{HeaderBar, ApplicationWindow, ViewSwitcher, ViewStack, Application,glib};
 use gtk4::{self as gtk, Label, MenuButton, Orientation, gio};
-use gtk::{Box, Button, Align};
+use gtk::{Box, Button};
+use crate::app_display;
+
 
 pub fn window_init(main: &Application) {
     // Notes to self:
@@ -29,7 +31,6 @@ pub fn window_init(main: &Application) {
     let content = Box::new(Orientation::Vertical, 0);
     let head_bar = HeaderBar::builder()
         .build();    
-    
     //buttons
     let menu_btn = MenuButton::builder()
         .icon_name("open-menu-symbolic")
@@ -39,11 +40,7 @@ pub fn window_init(main: &Application) {
     let tabs_switch = ViewStack::new();
     tabs_switch.set_vexpand(true);
 
-    let explore_page = Box::builder()
-        .halign(Align::Center)
-        .valign(Align::Center)
-        .orientation(Orientation::Vertical)
-        .build();
+    let explore_page = app_display::build_explore_page();
     
     let page1 = tabs_switch.add_titled(&explore_page, Some("explore"), "Explore");
     page1.set_icon_name(Some("system-search-symbolic"));    
@@ -92,12 +89,8 @@ pub fn window_init(main: &Application) {
     });
     
     
-    
-    
-    
-    
-    
     //packing of the declared buttons and viewswithcers
+    // aka packers
     head_bar.set_title_widget(Some(&tabs_switcher));
     head_bar.pack_end(&menu_btn);
     head_bar.pack_start(&refresh);
