@@ -29,25 +29,26 @@ pub fn window_init(main: &Application) {
     let head_bar = HeaderBar::builder()
         .build();
     head_bar.pack_end(&menu_btn);
-    content.append(&head_bar);
-    
-    
+   
+
     let main_dis = Box::builder()
         .valign(gtk4::Align::Center)
         .halign(gtk4::Align::Center)
         .hexpand(true)
         .vexpand(true)
         .build();
-    let button = Button::builder()
-        .label("CLICK ME")
+    let refresh = Button::builder()
+        .icon_name("emblem-synchronizing-symbolic")
         .build();
-    button.connect_clicked(|_|{
+    refresh.connect_clicked(|_|{
         println!("Lmao GAGO KA");
     });
+    head_bar.pack_start(&refresh);
+    content.append(&head_bar);
     
     let spinner = adw::Spinner::new();
     spinner.set_size_request(128, 128);
-    main_dis.append(&button);
+    
     main_dis.append(&spinner);
     
     content.append(&main_dis);
