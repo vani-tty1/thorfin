@@ -52,7 +52,7 @@ pub fn window_init(main: &Application) {
     
     let upd_page = Label::new(Some("Updates"));
     let page3 = tabs_switch.add_titled(&upd_page, Some("updates"), "Updates");
-    page3.set_icon_name(Some("preferences-other-symbolic"));
+    page3.set_icon_name(Some("preferences-system-symbolic"));
     
     let tabs_switcher = ViewSwitcher::builder()
         .stack(&tabs_switch)
@@ -82,7 +82,6 @@ pub fn window_init(main: &Application) {
             btn_clone.set_sensitive(true);
             glib::ControlFlow::Break
         });
-        
         
         
         explore_page_clone.append(&spinner);

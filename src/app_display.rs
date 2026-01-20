@@ -46,6 +46,10 @@ fn app_row(app: &AppEntry) -> Box {
         .build();
     install_btn.add_css_class("pill");
     
+    install_btn.connect_clicked(|_| {
+        println!("test install function")
+    });
+    
     //packers
     row_box.append(&icon);
     row_box.append(&text_box);
