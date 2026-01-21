@@ -1,17 +1,17 @@
-app-id: io.github.vani1_2.memerist
+app-id: io.github.vani1_2.thorfin
 runtime: org.gnome.Platform
 runtime-version: '49'
 sdk: org.gnome.Sdk
-command: memerist
+command: thorfin
 finish-args:
   - --share=ipc
   - --socket=fallback-x11
   - --socket=wayland
   - --device=dri
 modules:
-  - name: Memerist
+  - name: Thorfin
     buildsystem: meson
     sources:
       - type: git
-        url: https://github.com/Vani1-2/memerist.git
+        url: https://github.com/Vani1-2/thorfin.git
         branch: main
