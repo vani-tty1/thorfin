@@ -1,5 +1,6 @@
 use gtk4::prelude::*;
 use gtk4::{Box, Orientation, Align, Label, Button, Image, ListBox, SelectionMode, ScrolledWindow};
+use crate::backend::install;
 
 #[allow(dead_code)]
 #[derive(Clone)]
@@ -46,8 +47,9 @@ fn app_row(app: &AppEntry) -> Box {
         .build();
     install_btn.add_css_class("pill");
     
-    install_btn.connect_clicked(|_| {
-        println!("test install function")
+    let app_clone = app.clone();
+    install_btn.connect_clicked(move |_| {
+        install::install_app(&app_clone)
     });
     
     //packers
