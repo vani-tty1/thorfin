@@ -2,8 +2,9 @@ use libadwaita as adw;
 use adw::prelude::*;
 use adw::{HeaderBar, ApplicationWindow, ViewSwitcher, ViewStack, Application,glib};
 use gtk4::{self as gtk, Label, MenuButton, Orientation, gio};
-use gtk::{Box, Button};
+use gtk::{Box, Button, Align, Stack};
 use crate::app_display;
+use crate::backend::packagekit::update_list;
 
 
 pub fn window_init(main: &Application) {
@@ -42,7 +43,21 @@ pub fn window_init(main: &Application) {
 
     let explore_page = app_display::build_explore_page();
     
-    let page1 = tabs_switch.add_titled(&explore_page, Some("explore"), "Explore");
+    let spinner_box = Box::new(Orientation::Vertical, 0);
+    spinner_box.set_valign(Align::Center);
+    spinner_box.set_halign(Align::Center);
+        
+    let spinner = adw::Spinner::new();
+    spinner.set_size_request(64, 64);
+    spinner_box.append(&spinner);
+    
+    let explore_stack = Stack::new();
+    explore_stack.add_named(&explore_page, Some("content"));
+    explore_stack.add_named(&spinner_box, Some("loading"));
+    explore_stack.set_visible_child_name("content");
+    
+    
+    let page1 = tabs_switch.add_titled(&explore_stack, Some("explore"), "Explore");
     page1.set_icon_name(Some("system-search-symbolic"));    
 
     let ins_page = Label::new(Some("Installed "));
@@ -64,27 +79,22 @@ pub fn window_init(main: &Application) {
         .build();
     
     
-    
-    let explore_page_clone = explore_page.clone();
+    let stack_clone = explore_stack.clone();
     refresh.connect_clicked(move |btn|{
         btn.set_icon_name("media-playback-stop-symbolic");
         btn.set_sensitive(false);
+        stack_clone.set_visible_child_name("loading");
         
-        let spinner = adw::Spinner::new();
-        spinner.set_size_request(128, 128);
         
-        let spinner_clone = spinner.clone();
+        let stack_clone2 = stack_clone.clone();
         let btn_clone = btn.clone();
-        
         glib::timeout_add_seconds_local(3, move ||  {
-            spinner_clone.unparent();
+            update_list();
             btn_clone.set_icon_name("view-refresh-symbolic");
             btn_clone.set_sensitive(true);
+            stack_clone2.set_visible_child_name("content");
             glib::ControlFlow::Break
         });
-        
-        
-        explore_page_clone.append(&spinner);
     });
     
     

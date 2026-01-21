@@ -1,6 +1,6 @@
 use gtk4::prelude::*;
 use gtk4::{Box, Orientation, Align, Label, Button, Image, ListBox, SelectionMode, ScrolledWindow};
-use crate::backend::install;
+use crate::backend::packagekit;
 
 #[allow(dead_code)]
 #[derive(Clone)]
@@ -49,7 +49,7 @@ fn app_row(app: &AppEntry) -> Box {
     
     let app_clone = app.clone();
     install_btn.connect_clicked(move |_| {
-        install::install_app(&app_clone)
+        packagekit::install_app(&app_clone)
     });
     
     //packers
