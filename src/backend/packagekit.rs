@@ -15,7 +15,7 @@ pub fn update_list() {
 pub fn install_app(app: &AppEntry) {
     Command::new("pkcon")
         .arg("install")
-        .arg(&app.name)
+        .arg(&app.name.to_lowercase())
         .status()
         .expect("Failed to run install!");
 }
