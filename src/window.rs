@@ -58,16 +58,16 @@ pub fn window_init(main: &Application) {
     
     
     let page1 = tabs_switch.add_titled(&explore_stack, Some("explore"), "Explore");
-    page1.set_icon_name(Some("system-search-symbolic"));    
+    page1.set_icon_name(Some("emoji-symbols-symbolic"));    
 
     let ins_page = Label::new(Some("Installed "));
     let page2 = tabs_switch.add_titled(&ins_page, Some("installed"), "Installed");
-    page2.set_icon_name(Some("preferences-other-symbolic"));    
+    page2.set_icon_name(Some("system-run-symbolic"));    
     
     
     let upd_page = Label::new(Some("Updates"));
     let page3 = tabs_switch.add_titled(&upd_page, Some("updates"), "Updates");
-    page3.set_icon_name(Some("preferences-system-symbolic"));
+    page3.set_icon_name(Some("applications-engineering-symbolic"));
     
     let tabs_switcher = ViewSwitcher::builder()
         .stack(&tabs_switch)
