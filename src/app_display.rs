@@ -18,7 +18,7 @@ fn app_row(app: &AppEntry) -> Box {
     row_box.set_margin_end(12);
     
     let icon = Image::builder()
-        .icon_name("application-x-executable-symbolic")
+        .icon_name(&app.id)
         .pixel_size(48)
         .build();
     
