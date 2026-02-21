@@ -49,7 +49,7 @@ fn app_row(app: &AppEntry) -> Box {
     
     let app_clone = app.clone();
     install_btn.connect_clicked(move |_| {
-        packagekit::install_app(&app_clone)
+        packagekit::install_app(&app_clone);
     });
     
     //packers

@@ -6,3 +6,4 @@ edition = "2024"
 [dependencies]
 gtk4 = "0.10.3"
 libadwaita = { version = "0.8.1", features = ["v1_6"] }
+tokio = "1.49.0"

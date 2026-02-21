@@ -2,9 +2,8 @@ use std::process::Command;
 use crate::app_display::AppEntry;
 
 
-
-pub fn update_list() {
-    Command::new("pkcon")
+pub async fn update_list() {
+    Command::new("pkgcli")
         .arg("refresh")
         .status()
         .expect("Failed to refresh cache");
@@ -12,8 +11,8 @@ pub fn update_list() {
 
 
 
-pub fn install_app(app: &AppEntry) {
-    Command::new("pkcon")
+pub async fn install_app(app: &AppEntry) {
+    Command::new("pkgcli")
         .arg("install")
         .arg(&app.name.to_lowercase())
         .status()
