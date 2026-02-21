@@ -1,6 +1,7 @@
 use gtk4::prelude::*;
 use gtk4::{Box, Orientation, Align, Label, Button, Image, ListBox, SelectionMode, ScrolledWindow, glib};
 use crate::backend::packagekit;
+use crate::backend::flathub;
 
 #[allow(dead_code)]
 #[derive(Clone)]
@@ -63,13 +64,13 @@ fn app_row(app: &AppEntry) -> Box {
 }
 
 
+
 pub fn build_explore_page() -> Box {
-    
     let parent_box = Box::builder()
-            .orientation(Orientation::Vertical)
-            .hexpand(true)
-            .vexpand(true)
-            .build();
+        .orientation(Orientation::Vertical)
+        .hexpand(true)
+        .vexpand(true)
+        .build();
     
     let scroll = ScrolledWindow::builder()
         .hscrollbar_policy(gtk4::PolicyType::Never)
@@ -85,36 +86,31 @@ pub fn build_explore_page() -> Box {
     list_box.set_margin_start(12);
     list_box.set_margin_end(12);
 
-    // test dta source 
-    // don't know how to communicate to flathub API yet
-    let apps_data = vec![
-        AppEntry {
-            name: "Firefox".to_string(),
-            id: "org.mozilla.firefox".to_string(),
-            summary: "Fast, Private & Safe Web Browser".to_string(),
-        },
-        AppEntry {
-            name: "OBS Studio".to_string(),
-            id: "com.obsproject.Studio".to_string(),
-            summary: "Live streaming and video recording software".to_string(),
-        },
-        AppEntry {
-            name: "GIMP".to_string(),
-            id: "org.gimp.GIMP".to_string(),
-            summary: "Create images and edit photographs".to_string(),
-        },
-        AppEntry {
-            name: "VLC".to_string(),
-            id: "org.videolan.VLC".to_string(),
-            summary: "The ultimate media player".to_string(),
-        },
-    ];
-
-    for app in apps_data {
-        let row_widget = app_row(&app);
-        list_box.append(&row_widget);
-    }
-
+    let list_box_clone = list_box.clone();
+    
+    glib::spawn_future_local(async move {
+        println!("Async block started!");
+        
+        let dummy = AppEntry {
+            id: "system-run-symbolic".to_string(),
+            name: "Test Dummy".to_string(),
+            summary: "If you see this, GTK dynamic updates work.".to_string(),
+        };
+        list_box_clone.append(&app_row(&dummy));
+    
+        let mut all_apps = flathub::fetch_popular().await;
+        let repo_apps = packagekit::search_repo("browser").await; 
+        
+        println!("Flathub fetched: {} apps", all_apps.len());
+        println!("Repo fetched: {} apps", repo_apps.len());
+    
+        all_apps.extend(repo_apps); 
+    
+        for app in all_apps {
+            list_box_clone.append(&app_row(&app));
+        }
+    });
+    
     scroll.set_child(Some(&list_box));
     parent_box.append(&scroll);
     parent_box
