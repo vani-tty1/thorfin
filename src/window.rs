@@ -80,20 +80,17 @@ pub fn window_init(main: &Application) {
     
     
     let stack_clone = explore_stack.clone();
-    refresh.connect_clicked(move |btn|{
-        btn.set_icon_name("media-playback-stop-symbolic");
-        btn.set_sensitive(false);
-        stack_clone.set_visible_child_name("loading");
-        
-        
-        let stack_clone2 = stack_clone.clone();
-        let btn_clone = btn.clone();
-        glib::timeout_add_seconds_local(3, move ||  {
-            update_list();
+        refresh.connect_clicked(move |btn|{
+            btn.set_icon_name("media-playback-stop-symbolic");
+            btn.set_sensitive(false);
+            stack_clone.set_visible_child_name("loading");
+            let stack_clone2 = stack_clone.clone();
+            let btn_clone = btn.clone();
+            glib::spawn_future_local(async move {
+            update_list().await; 
             btn_clone.set_icon_name("view-refresh-symbolic");
             btn_clone.set_sensitive(true);
             stack_clone2.set_visible_child_name("content");
-            glib::ControlFlow::Break
         });
     });
     

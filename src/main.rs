@@ -11,8 +11,8 @@ mod backend;
 
 
 
-
-fn main() {
+#[tokio::main]
+async fn main() {
     let app = Application::builder()
         .application_id("io.github.vani1_2.thorfin")
         .build();
